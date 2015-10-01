@@ -9,6 +9,9 @@ def take_picture(num_to_take, num_sleep)
   picture_container = []
   num_of_pictures = 0
 
+
+  while num_of_pictures < num_to_take do
+
     @urlstring_to_post = 'http://10.0.0.1:10000/sony/camera'
     @sound = HTTParty.post(@urlstring_to_post.to_str,
         :body => {
@@ -18,8 +21,6 @@ def take_picture(num_to_take, num_sleep)
           :version =>'1.0'
           }.to_json,
           :headers => {'Content-Type' => 'application/json'})
-
-  while num_of_pictures < num_to_take do
 
     @result = HTTParty.post(@urlstring_to_post.to_str,
         :body => {
@@ -38,7 +39,7 @@ def take_picture(num_to_take, num_sleep)
   $pictures << picture_container
 end
 
-take_picture(2,0)
+take_picture(3,0)
 
 def download_pics()
   $pictures[0].each do |pic|
