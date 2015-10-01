@@ -1,4 +1,4 @@
-puts "Hello World"
+puts "Smile! I'm taking your picture!"
 
 require 'open-uri'
 require 'httparty'
@@ -6,10 +6,20 @@ require 'json'
 
 $pictures=[]
 def take_picture(num_to_take, num_sleep)
-picture_container = []
+  picture_container = []
   num_of_pictures = 0
+
   while num_of_pictures < num_to_take
     @urlstring_to_post = 'http://10.0.0.1:10000/sony/camera'
+
+    @sound = HTTParty.post(@urlstring_to_post.to_str,
+        :body => {
+          :method => 'setBeepMode',
+          :params => ['Off'],
+          :id => 1,
+          :version =>'1.0'
+          }.to_json,
+          :headers => {'Content-Type' => 'application/json'})
 
     @result = HTTParty.post(@urlstring_to_post.to_str,
         :body => {
@@ -18,7 +28,8 @@ picture_container = []
                   :id => 1,
                   :version => '1.0'
                  }.to_json,
-        :headers => { 'Content-Type' => 'application/json' } )
+        :headers => {'Content-Type' => 'application/json'})
+
     num_of_pictures += 1
     picture_container << @result["result"][0][0]
     sleep(num_sleep)
